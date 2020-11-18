@@ -96,6 +96,7 @@ namespace CSHttpClientSample
                 // Display the JSON response.
                 Console.WriteLine("\nResponse:\n\n{0}\n",
                     JToken.Parse(contentString).ToString());
+                File.WriteAllText(@"C:\Users\hrust\Downloads\temp_text2.txt", JToken.Parse(contentString).ToString());
             }
             catch (Exception e)
             {
