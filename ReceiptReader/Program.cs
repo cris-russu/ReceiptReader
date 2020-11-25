@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.IO;
 using System.Net.Http;
@@ -93,6 +94,10 @@ namespace CSHttpClientSample
                 // Asynchronously get the JSON response.
                 string contentString = await response.Content.ReadAsStringAsync();
 
+                // Attempting to deserialize and contain JSON into new dynamic object
+                dynamic myNewObject = JsonConvert.DeserializeObject(contentString);
+                Console.WriteLine(myNewObject);
+                
                 // Display the JSON response.
                 Console.WriteLine("\nResponse:\n\n{0}\n",
                     JToken.Parse(contentString).ToString());

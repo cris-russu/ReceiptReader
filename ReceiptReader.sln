@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.30523.141
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReceiptReader", "ReceiptReader\ReceiptReader.csproj", "{29EB2B5D-2BEE-4E25-9320-6BEF21D88716}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IronOCRReader", "IronOCRReader\IronOCRReader.csproj", "{7AE96264-DC44-48C7-A8B2-38668B4A78ED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IronOCRReader", "IronOCRReader\IronOCRReader.csproj", "{7AE96264-DC44-48C7-A8B2-38668B4A78ED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IronTiif2PdfConverter", "IronTiif2PdfConverter\IronTiif2PdfConverter.csproj", "{6E290CA5-F0D4-4917-80F4-F2F88520573F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{7AE96264-DC44-48C7-A8B2-38668B4A78ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7AE96264-DC44-48C7-A8B2-38668B4A78ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7AE96264-DC44-48C7-A8B2-38668B4A78ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E290CA5-F0D4-4917-80F4-F2F88520573F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E290CA5-F0D4-4917-80F4-F2F88520573F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E290CA5-F0D4-4917-80F4-F2F88520573F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E290CA5-F0D4-4917-80F4-F2F88520573F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
