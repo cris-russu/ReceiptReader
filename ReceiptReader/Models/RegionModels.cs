@@ -1,6 +1,6 @@
 ﻿namespace ReceiptReader.Models
 {
-    public class RegionModels
+    public class RegionModel
     {
         public string BoundingBox { get; set; }
         public LineModel[] Lines { get; set; }

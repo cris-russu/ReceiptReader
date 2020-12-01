@@ -1,11 +1,15 @@
 ﻿using ReceiptReader.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace ReceiptReader.Helpers
 {
     public static class Helpers
     {
+        private static string folderPath = @"C:\Users\hrust\Downloads\receipts";
+
+        public static string[] PicturesPaths => Directory.GetFiles(folderPath);
 
         public static CoordinatesModel GetCoordinates(string input)
         {
@@ -33,7 +37,7 @@ namespace ReceiptReader.Helpers
             return result;
         }
 
-        public static void DisplayRegionsCoordinates(RegionModels[] regions)
+        public static void DisplayRegionsCoordinates(RegionModel[] regions)
         {
             int counter = 0;
             foreach (var region in regions)
@@ -43,22 +47,23 @@ namespace ReceiptReader.Helpers
             }
         }
 
-        public static void GetTextFromRegion(RegionModels region)
+        public static void GetTextFromRegion(RegionModel region)
         {
-            List<string> textArray = new List<string>();
+            List<string> textList = new List<string>();
+            Console.WriteLine($"Region coordinates: \n{region.BoundingCoordinates}");
+            
             foreach (var line in region.Lines)
             {
                 for (int i = 0; i < line.Words.Length; i++)
                 {
-                    textArray.Add(line.Words[i].Text);
+                    textList.Add(line.Words[i].Text);
+                   // Console.WriteLine(line.Words[i].Text);
                 }
             }
 
-            foreach (var item in textArray)
-            {
-                Console.WriteLine(item);
-            }
         }
 
+       
+    
     }
 }

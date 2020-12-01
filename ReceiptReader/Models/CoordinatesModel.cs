@@ -13,7 +13,7 @@ namespace ReceiptReader.Models
 
         public override string ToString()
         {
-            return $"X: {X}, Y:{Y}, DeltaX:{DeltaX}, DeltaY:{DeltaY}";
+            return $"X: {X}, Y: {Y}, DeltaX: {DeltaX}, DeltaY: {DeltaY}";
         }
     }
 }

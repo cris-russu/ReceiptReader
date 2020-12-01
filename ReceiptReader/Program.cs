@@ -29,22 +29,26 @@ namespace CSHttpClientSample
             //string imageFilePath = Console.ReadLine();
 
             #region testing_Area  
-            string imageFilePath = @"C:\Users\hrust\Downloads\pic 3.jpg";
-            Console.ReadKey();
+            //string imageFilePath = @"C:\Users\hrust\Downloads\receipts\pic 6.jpg";
+            //Console.ReadKey();
+
+            foreach (var imageFilePath in Helpers.PicturesPaths)
+            {
+
+
+                if (File.Exists(imageFilePath))
+                {
+                    // Call the REST API method.
+                    Console.WriteLine("\nWait a moment for the results to appear.\n");
+                    await MakeOCRRequest(imageFilePath);
+                }
+                else
+                {
+                    Console.WriteLine("\nInvalid file path");
+                }
+
+            }
             #endregion testing_Area
-
-
-
-            if (File.Exists(imageFilePath))
-            {
-                // Call the REST API method.
-                Console.WriteLine("\nWait a moment for the results to appear.\n");
-                await MakeOCRRequest(imageFilePath);
-            }
-            else
-            {
-                Console.WriteLine("\nInvalid file path");
-            }
             Console.WriteLine("\nPress Enter to exit...");
             Console.ReadLine();
         }
@@ -99,17 +103,12 @@ namespace CSHttpClientSample
                 // Attempting to deserialize and contain JSON into new dynamic object
                 dynamic model = JsonConvert.DeserializeObject<ReceiptModel>(contentString);
 
+                #region white-testing 
                 Console.WriteLine("language: " + model.Language);
                 Console.WriteLine(model.Regions.Length + " regions");
                 Helpers.DisplayRegionsCoordinates(model.Regions);
 
-                int counter = 0;
-                foreach (var region in model.Regions)
-                {
-                    counter++;
-                    Console.WriteLine($"Region {counter}" + Environment.NewLine);
-                    Helpers.GetTextFromRegion(region);
-                }
+                #endregion white-testing
 
                 // Display the JSON response.
                 //Console.WriteLine("\nResponse:\n\n{0}\n",
