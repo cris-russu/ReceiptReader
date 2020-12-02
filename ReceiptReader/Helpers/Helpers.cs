@@ -38,7 +38,6 @@ namespace ReceiptReader.Helpers
             }
         }
 
-
         /// <summary>
         /// Gets the text visible in the specified image file by using
         /// the Computer Vision REST API.
@@ -91,9 +90,7 @@ namespace ReceiptReader.Helpers
 
                 #region white-testing 
 
-                Console.WriteLine("language: " + model.Language);
-                Console.WriteLine(model.Regions.Length + " regions");
-                Helpers.DisplayRegionsCoordinates(model.Regions);
+                Testers.DisplayModelRegions(model);
 
                 #endregion white-testing
 
