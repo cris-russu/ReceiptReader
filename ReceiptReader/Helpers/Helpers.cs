@@ -6,13 +6,14 @@ using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace ReceiptReader.Helpers
 {
     public static class Helpers
     {
         private static string folderPath = @"C:\Users\hrust\Downloads\receipts";
-        
+
         static string subscriptionKey = Environment.GetEnvironmentVariable("COMPUTER_VISION_SUBSCRIPTION_KEY");
 
         static string endpoint = Environment.GetEnvironmentVariable("COMPUTER_VISION_ENDPOINT");
@@ -29,13 +30,11 @@ namespace ReceiptReader.Helpers
         static byte[] GetImageAsByteArray(string imageFilePath)
         {
             // Open a read-only file stream for the specified file.
-            using (FileStream fileStream =
-                new FileStream(imageFilePath, FileMode.Open, FileAccess.Read))
-            {
-                // Read the file's contents into a byte array.
-                BinaryReader binaryReader = new BinaryReader(fileStream);
-                return binaryReader.ReadBytes((int)fileStream.Length);
-            }
+            using FileStream fileStream =
+                new FileStream(imageFilePath, FileMode.Open, FileAccess.Read);
+            // Read the file's contents into a byte array.
+            BinaryReader binaryReader = new BinaryReader(fileStream);
+            return binaryReader.ReadBytes((int)fileStream.Length);
         }
 
         /// <summary>
@@ -43,7 +42,7 @@ namespace ReceiptReader.Helpers
         /// the Computer Vision REST API.
         /// </summary>
         /// <param name="imageFilePath">The image file with printed text.</param>
-        public static async Task MakeOCRRequest(string imageFilePath)
+        public static async Task<ReceiptModel> MakeOCRRequest(string imageFilePath)
         {
             try
             {
@@ -86,13 +85,8 @@ namespace ReceiptReader.Helpers
                 string contentString = await response.Content.ReadAsStringAsync();
 
                 // Attempting to deserialize and contain JSON into new dynamic object
-                dynamic model = JsonConvert.DeserializeObject<ReceiptModel>(contentString);
+                return JsonConvert.DeserializeObject<ReceiptModel>(contentString);
 
-                #region white-testing 
-
-                Testers.DisplayModelRegions(model);
-
-                #endregion white-testing
 
                 // Display the JSON response.
                 //Console.WriteLine("\nResponse:\n\n{0}\n",
@@ -102,6 +96,7 @@ namespace ReceiptReader.Helpers
             catch (Exception e)
             {
                 Console.WriteLine("\n" + e.Message);
+                return null;
             }
         }
 
@@ -147,19 +142,70 @@ namespace ReceiptReader.Helpers
         {
             List<string> textList = new List<string>();
             Console.WriteLine($"Region coordinates: \n{region.BoundingCoordinates}");
-            
+
             foreach (var line in region.Lines)
             {
                 for (int i = 0; i < line.Words.Length; i++)
                 {
                     textList.Add(line.Words[i].Text);
-                   // Console.WriteLine(line.Words[i].Text);
+                    Console.WriteLine(line.Words[i].Text + $"            {line.Words[i].BoundingCoordinates}");
                 }
             }
 
         }
 
-       
-    
+        public static void FindTotalCoordinates(ReceiptModel receipt)
+        {
+
+            foreach (var region in receipt.Regions)
+            {
+
+                var coordinates = region.Lines.SelectMany(l => l.Words)
+                                        .Select(w => w)
+                                        .Where(t => t.Text == "TOTAL")
+                                        .Select(s => s.BoundingCoordinates)
+                                        .FirstOrDefault();
+
+                Console.WriteLine(coordinates);
+            }
+        }
+
+        public static void DisplayAvgLineHeight(ReceiptModel receipt)
+        {
+            List<List<int>> heights = new List<List<int>>();
+            foreach (var region in receipt.Regions)
+            {
+                heights.Add(region.Lines.Select(l => l.BoundingCoordinates.DeltaY).ToList());
+            }
+
+            foreach (var list in heights)
+            {
+                Console.WriteLine("============================");
+                foreach (var item in list)
+                {
+                    Console.WriteLine(item);
+                }
+                Console.WriteLine("****");
+                Console.WriteLine(list.Average());
+            }
+
+        }
+
+        public static List<LineModel> ExtractAllLines(ReceiptModel receipt)
+        {
+            List<LineModel> allLines = new List<LineModel>();
+
+            foreach (var region in receipt.Regions)
+            {
+                var res = region.Lines.Select(l => l);
+                foreach (var item in res)
+                {
+                    allLines.Add(item);
+                }
+            }
+
+            return allLines;
+        }
+
     }
 }

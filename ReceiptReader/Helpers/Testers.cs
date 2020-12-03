@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ReceiptReader.Models;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
@@ -30,7 +31,12 @@ namespace ReceiptReader.Helpers
                 Console.WriteLine($"Image {imageFilePath}");
                 // Call the REST API method.
                 Console.WriteLine("\nWait a moment for the results to appear.\n");
-                await Helpers.MakeOCRRequest(imageFilePath);
+                ReceiptModel model = await Helpers.MakeOCRRequest(imageFilePath);
+                DisplayModelRegions(model);
+                foreach (var region in model.Regions)
+                {
+                    Helpers.GetTextFromRegion(region);
+                }
             }
             else
             {
