@@ -154,58 +154,40 @@ namespace ReceiptReader.Helpers
 
         }
 
-        public static void FindTotalCoordinates(ReceiptModel receipt)
+        public static CoordinatesModel FindTotalCoordinates(ReceiptModel receipt)
         {
-
+            CoordinatesModel coord = new CoordinatesModel();
             foreach (var region in receipt.Regions)
             {
-
                 var coordinates = region.Lines.SelectMany(l => l.Words)
-                                        .Select(w => w)
-                                        .Where(t => t.Text == "TOTAL")
-                                        .Select(s => s.BoundingCoordinates)
-                                        .FirstOrDefault();
-
-                Console.WriteLine(coordinates);
+                                    .Select(w => w)
+                                    .Where(t => t.Text == "TOTAL")
+                                    .Select(s => s.BoundingCoordinates)
+                                    .FirstOrDefault();
+                if (coordinates != null) coord = coordinates;
+                else continue;
             }
+            return coord;
         }
 
-        public static void DisplayAvgLineHeight(ReceiptModel receipt)
+        public static List<double> DisplayAvgLineHeight(ReceiptModel receipt)
         {
             List<List<int>> heights = new List<List<int>>();
             foreach (var region in receipt.Regions)
             {
                 heights.Add(region.Lines.Select(l => l.BoundingCoordinates.DeltaY).ToList());
             }
-
+            List<double> avgList = new List<double>();
             foreach (var list in heights)
             {
-                Console.WriteLine("============================");
-                foreach (var item in list)
-                {
-                    Console.WriteLine(item);
-                }
-                Console.WriteLine("****");
-                Console.WriteLine(list.Average());
+                avgList.Add(list.Average());
             }
-
+            return avgList;
         }
 
-        public static List<LineModel> ExtractAllLines(ReceiptModel receipt)
-        {
-            List<LineModel> allLines = new List<LineModel>();
 
-            foreach (var region in receipt.Regions)
-            {
-                var res = region.Lines.Select(l => l);
-                foreach (var item in res)
-                {
-                    allLines.Add(item);
-                }
-            }
 
-            return allLines;
-        }
+
 
     }
 }
