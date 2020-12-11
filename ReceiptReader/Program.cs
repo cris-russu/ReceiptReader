@@ -19,7 +19,7 @@ namespace CSHttpClientSample
         static async Task Main()
         {
             string imageFilePath = @"C:\Users\hrust\Downloads\receipts\IMG_1312.jpg";
-            Testers.DisplayPictureInfo(imageFilePath);
+            //Testers.DisplayPictureInfo(imageFilePath);
 
             ReceiptProcessor recProc = new ReceiptProcessor();
             await recProc.ExtractReceipt(imageFilePath);

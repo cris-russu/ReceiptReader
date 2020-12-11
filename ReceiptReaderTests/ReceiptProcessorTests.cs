@@ -9,19 +9,19 @@ namespace ReceiptReaderTests
     public class Tests
     {
         string imageFilePath = @"C:\Users\hrust\Downloads\receipts\IMG_1312.jpg";
-        ReceiptModel rP = new ReceiptModel();
+        ReceiptModel rM = new ReceiptModel();
+        ReceiptProcessor recProc = new ReceiptProcessor();
 
         [SetUp]
         public void Setup()
         {
-            ReceiptProcessor recProc = new ReceiptProcessor();
 
             Task.Run(async () =>
             {
                 await recProc.ExtractReceipt(imageFilePath);
             }).GetAwaiter().GetResult();
 
-            rP = recProc.Receipt;
+            rM = recProc.Receipt;
         }
 
         [Test]
@@ -29,9 +29,9 @@ namespace ReceiptReaderTests
         {
             //Arrange
             int expectedNoOfRegions = 5;
-           
+
             //Act
-            int actualNoOfRegions = rP.Regions.Length;
+            int actualNoOfRegions = rM.Regions.Length;
 
             //Assert
             Assert.AreEqual(expectedNoOfRegions, actualNoOfRegions);
@@ -44,10 +44,24 @@ namespace ReceiptReaderTests
             int expectedNoOfLines = 53;
 
             //Act
-            var actualNoOfLines = rP.Regions.SelectMany(r => r.Lines).Select(l => l).ToList().Count;
+            var actualNoOfLines = rM.Regions.SelectMany(r => r.Lines).Select(l => l).ToList().Count;
 
             //Assert
             Assert.AreEqual(expectedNoOfLines, actualNoOfLines);
+        }
+
+        [Test]
+        public void ExtractAllLinesTest()
+        {
+            //Arrange
+            int expectedNoOfLines = 53;
+
+            //Act
+            var actualNoOfLines = recProc.ExtractAllLines().Count;
+
+            //Assert
+            Assert.AreEqual(expectedNoOfLines, actualNoOfLines);
+
         }
     }
 }
