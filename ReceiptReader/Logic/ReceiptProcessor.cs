@@ -10,6 +10,7 @@ namespace ReceiptReader.Logic
     public class ReceiptProcessor
     {
         private ReceiptModel _receipt;
+        public List<string> MergedLines = new List<string>();
 
         public ReceiptModel Receipt
         {
@@ -33,7 +34,7 @@ namespace ReceiptReader.Logic
             return _receipt;
         }
 
-        
+
 
         public ReceiptProcessor(ReceiptModel receipt)
         {
@@ -60,7 +61,6 @@ namespace ReceiptReader.Logic
             return allLines;
         }
 
-        //TODO: finish this
         public void MergeLineText()
         {
             var allLines = ExtractAllLines();
@@ -71,10 +71,9 @@ namespace ReceiptReader.Logic
                 string temp = "";
                 foreach (var word in res)
                 {
-                    temp = word + " ";
-                    Console.Write(temp);
+                    temp = temp + word + " ";
                 }
-                Console.WriteLine();
+                MergedLines.Add(temp);
             }
         }
 
@@ -101,6 +100,9 @@ namespace ReceiptReader.Logic
                 Console.WriteLine();
             }
         }
+
+
+
 
     }
 }

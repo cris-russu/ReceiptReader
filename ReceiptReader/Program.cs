@@ -23,9 +23,13 @@ namespace CSHttpClientSample
 
             ReceiptProcessor recProc = new ReceiptProcessor();
             await recProc.ExtractReceipt(imageFilePath);
-           
 
-            //TODO: add processor-classes for line- and receipt-models
+            recProc.MergeLineText();
+            foreach (var line in recProc.MergedLines)
+            {
+                Console.WriteLine(line);
+            }
+
             //TODO: improve the mapping of the Total/Sum/At betale field to the sum 
 
             Console.WriteLine("\nPress Enter to exit...");
