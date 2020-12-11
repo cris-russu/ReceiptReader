@@ -1,4 +1,5 @@
-﻿using ReceiptReader.Models;
+﻿using ReceiptReader.Logic;
+using ReceiptReader.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,7 +11,7 @@ namespace ReceiptReader.Helpers
 {
     public static class Testers
     {
-        
+
 
         public async static Task DisplayAllFolderInfo()
         {
@@ -19,21 +20,20 @@ namespace ReceiptReader.Helpers
             {
                 counter++;
                 Console.WriteLine(Environment.NewLine + $"Image nr. {counter}");
-                await DisplayPictureInfo(imageFilePath);
+                DisplayPictureInfo(imageFilePath);
                 await Task.Delay(2000);
             }
         }
 
-        public  async static Task DisplayPictureInfo(string imageFilePath)
+        public static async void DisplayPictureInfo(string imageFilePath)
         {
             if (File.Exists(imageFilePath))
-            {                
-                Console.WriteLine($"Image {imageFilePath}");
-                // Call the REST API method.
-                Console.WriteLine("\nWait a moment for the results to appear.\n");
-                ReceiptModel model = await Helpers.MakeOCRRequest(imageFilePath);
-                DisplayModelRegions(model);
-                foreach (var region in model.Regions)
+            {
+                ReceiptProcessor proc = new ReceiptProcessor();
+                await proc.ExtractReceipt(imageFilePath);
+
+                DisplayModelRegions(proc.Receipt);
+                foreach (var region in proc.Receipt.Regions)
                 {
                     Helpers.GetTextFromRegion(region);
                 }
@@ -42,8 +42,8 @@ namespace ReceiptReader.Helpers
             {
                 Console.WriteLine("\nInvalid file path");
             }
-           
-            
+
+
         }
 
         internal static void DisplayModelRegions(dynamic model)

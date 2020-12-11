@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ReceiptReader.Models
+﻿namespace ReceiptReader.Models
 {
     public class ReceiptModel
     {
@@ -10,6 +6,6 @@ namespace ReceiptReader.Models
         public double TextAngle { get; set; }
         public string Orientation { get; set; }
         public RegionModel[] Regions { get; set; }
-        
+                
     }
 }

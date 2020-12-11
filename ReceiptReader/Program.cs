@@ -18,21 +18,15 @@ namespace CSHttpClientSample
 
         static async Task Main()
         {
-            string imageFilePath = @"C:\Users\hrust\Downloads\receipts\pic 6.jpg";
-          //  await Testers.DisplayPictureInfo(imageFilePath);
+            string imageFilePath = @"C:\Users\hrust\Downloads\receipts\IMG_1312.jpg";
+            Testers.DisplayPictureInfo(imageFilePath);
 
-            ReceiptModel receipt = await Helpers.MakeOCRRequest(imageFilePath);
-
-            //  Helpers.FindTotalCoordinates(model);
-            //            Helpers.DisplayAvgLineHeight(model);
-
-            ReceiptProcessor recProc = new ReceiptProcessor(receipt);
-            recProc.FindTotalSum();
-
-            //TODO: add processor-classes for line- and receipt-models
+            ReceiptProcessor recProc = new ReceiptProcessor();
+            await recProc.ExtractReceipt(imageFilePath);
            
 
-            //await Testers.DisplayAllFolderInfo();
+            //TODO: add processor-classes for line- and receipt-models
+            //TODO: improve the mapping of the Total/Sum/At betale field to the sum 
 
             Console.WriteLine("\nPress Enter to exit...");
             Console.ReadLine();

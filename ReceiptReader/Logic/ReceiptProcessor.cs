@@ -1,8 +1,9 @@
 ﻿using ReceiptReader.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Text;
+using System.Threading.Tasks;
 
 namespace ReceiptReader.Logic
 {
@@ -16,10 +17,31 @@ namespace ReceiptReader.Logic
             set { _receipt = value; }
         }
 
+        public async Task<ReceiptModel> ExtractReceipt(string imageFilePath)
+        {
+            if (File.Exists(imageFilePath))
+            {
+                Console.WriteLine($"Image {imageFilePath}");
+                Console.WriteLine("\nWait a moment for the results to appear.\n");
+                _receipt = await Helpers.Helpers.MakeOCRRequest(imageFilePath);
+            }
+            else
+            {
+                Console.WriteLine("\nInvalid file path");
+                _receipt = new ReceiptModel();
+            }
+            return _receipt;
+        }
+
+        
 
         public ReceiptProcessor(ReceiptModel receipt)
         {
             _receipt = receipt;
+        }
+
+        public ReceiptProcessor()
+        {
         }
 
         public List<LineModel> ExtractAllLines()
