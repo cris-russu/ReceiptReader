@@ -18,17 +18,19 @@ namespace CSHttpClientSample
 
         static async Task Main()
         {
-            string imageFilePath = @"C:\Users\hrust\Downloads\receipts\IMG_1312.jpg";
-            //Testers.DisplayPictureInfo(imageFilePath);
+            string imageFilePath = @"C:\Users\hrust\Downloads\receipts\IMG_1306.jpg";
+
+            Helpers.DisplayJSONResponse(await Helpers.MakeOCRRequest(imageFilePath));
 
             ReceiptProcessor recProc = new ReceiptProcessor();
             await recProc.ExtractReceipt(imageFilePath);
 
-            recProc.MergeLineText();
-            foreach (var line in recProc.MergedLines)
-            {
-                Console.WriteLine(line);
-            }
+            
+            //recProc.MergeLineText();
+            //foreach (var line in recProc.MergedLines)
+            //{
+            //    Console.WriteLine(line);
+            //}
 
             //TODO: improve the mapping of the Total/Sum/At betale field to the sum 
 

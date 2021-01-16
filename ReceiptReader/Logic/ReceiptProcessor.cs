@@ -1,4 +1,5 @@
-﻿using ReceiptReader.Models;
+﻿using Newtonsoft.Json;
+using ReceiptReader.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -24,7 +25,8 @@ namespace ReceiptReader.Logic
             {
                 Console.WriteLine($"Image {imageFilePath}");
                 Console.WriteLine("\nWait a moment for the results to appear.\n");
-                _receipt = await Helpers.Helpers.MakeOCRRequest(imageFilePath);
+                var str = await Helpers.Helpers.MakeOCRRequest(imageFilePath);
+                _receipt = JsonConvert.DeserializeObject<ReceiptModel>(str);
             }
             else
             {

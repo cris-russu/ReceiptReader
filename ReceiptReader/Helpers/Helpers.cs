@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Linq;
+using Newtonsoft.Json.Linq;
 
 namespace ReceiptReader.Helpers
 {
@@ -42,7 +43,7 @@ namespace ReceiptReader.Helpers
         /// the Computer Vision REST API.
         /// </summary>
         /// <param name="imageFilePath">The image file with printed text.</param>
-        public static async Task<ReceiptModel> MakeOCRRequest(string imageFilePath)
+        public static async Task<string> MakeOCRRequest(string imageFilePath)
         {
             try
             {
@@ -83,21 +84,20 @@ namespace ReceiptReader.Helpers
 
                 // Asynchronously get the JSON response.
                 string contentString = await response.Content.ReadAsStringAsync();
+                return contentString;
 
-                // Attempting to deserialize and contain JSON into new dynamic object
-                return JsonConvert.DeserializeObject<ReceiptModel>(contentString);
-
-
-                // Display the JSON response.
-                //Console.WriteLine("\nResponse:\n\n{0}\n",
-                //   JToken.Parse(contentString).ToString());
-                // File.WriteAllText(@"C:\Users\hrust\Downloads\temp_text2.txt", JToken.Parse(contentString).ToString());
             }
             catch (Exception e)
             {
                 Console.WriteLine("\n" + e.Message);
-                return null;
+                return String.Empty;
             }
+        }
+
+        public static void DisplayJSONResponse(string ContentString)
+        {
+            Console.WriteLine("\nResponse:\n\n{0}\n",
+                   JToken.Parse(ContentString).ToString());
         }
 
         public static string[] PicturesPaths => Directory.GetFiles(folderPath);
